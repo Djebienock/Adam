@@ -1,27 +1,34 @@
-const hamburger = document.getElementById('hamburger');
-const navLinks = document.getElementById('nav-links');
-
-hamburger.addEventListener('click', () => {
-  navLinks.classList.toggle('active');
-  // Optionnel : animer le hamburger en X ici
-});
-
-
-const menuBtn = document.getElementById('mobile-menu');
+// On sélectionne les éléments par les classes ou ID que tu as définis dans ton HTML
+const menuBtn = document.querySelector('.hamburger') || document.getElementById('mobile-menu');
 const navMenu = document.querySelector('.nav-menu');
 
-menuBtn.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
-    
-    // Change l'icône de Hamburger à "X"
-    const icon = menuBtn.querySelector('i');
-    icon.classList.toggle('fa-bars');
-    icon.classList.toggle('fa-times');
-});
+// Vérification pour éviter les erreurs si l'élément n'existe pas
+if (menuBtn && navMenu) {
+    menuBtn.addEventListener('click', () => {
+        // On bascule la classe 'active' sur le menu pour l'afficher/cacher
+        navMenu.classList.toggle('active');
+        
+        // On change l'icône entre les barres (☰) et la croix (✕)
+        const icon = menuBtn.querySelector('i');
+        if (icon) {
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        }
+    });
+}
 
-// Fermer le menu quand on clique sur un lien
+// Fermer le menu automatiquement quand on clique sur un lien (pour la navigation interne)
 document.querySelectorAll('.nav-links a').forEach(link => {
     link.addEventListener('click', () => {
-        navMenu.classList.remove('active');
+        if (navMenu) {
+            navMenu.classList.remove('active');
+            
+            // On remet aussi l'icône en mode "barres"
+            const icon = menuBtn.querySelector('i');
+            if (icon) {
+                icon.classList.add('fa-bars');
+                icon.classList.remove('fa-times');
+            }
+        }
     });
 });
